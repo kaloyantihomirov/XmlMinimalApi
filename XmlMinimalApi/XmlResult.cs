@@ -5,7 +5,9 @@ namespace XmlMinimalApi
 {
     public class XmlResult<T> : IResult
     {
-        //Specify the type that needs to be serialized - T in our case
+        /// <remarks>
+        /// We can specify the type that needs to be serialized - T in our case
+        /// </remarks>
         private static readonly XmlSerializer Serializer = new(typeof(T));
 
         private readonly T _result;
@@ -17,6 +19,10 @@ namespace XmlMinimalApi
 
         public async Task ExecuteAsync(HttpContext httpContext)
         {
+            /// <remarks>
+            /// Uses the combination of buffer pooling and avoiding creating huge buffers in memory 
+            /// to increase the performance
+            /// </remarks>
             using var ms = new FileBufferingWriteStream();
 
             Serializer.Serialize(ms, _result);
