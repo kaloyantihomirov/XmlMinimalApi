@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.WebUtilities;
+
 using System.Xml.Serialization;
 
 namespace XmlMinimalApi
@@ -29,6 +30,9 @@ namespace XmlMinimalApi
             ms.Position = 0;
 
             httpContext.Response.ContentType = "application/xml";
+            /// <remarks>
+            /// Note we can't serialize directly to the Body stream, so that's why we use FileBufferingWriteStream
+            /// </remarks>
             await ms.DrainBufferAsync(httpContext.Response.Body);
         }
     }
